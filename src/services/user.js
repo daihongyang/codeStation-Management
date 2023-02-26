@@ -40,8 +40,22 @@ export function deleteUserById(id) {
  * @returns
  */
 export function addUser(data) {
+  data.type = "background"
   return request(`/api/user/`, {
     method: 'POST',
     data,
   });
 }
+
+/**
+ * 根据id查找用户信息
+ * @param {*} id 
+ * @returns 
+ */
+export function getUserById(id) {
+  return request(`/api/user/${id}`, {
+    method: "GET"
+  })
+}
+
+

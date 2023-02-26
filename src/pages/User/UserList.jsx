@@ -6,12 +6,14 @@ import { updateUserInfo } from '../../services/user';
 import InfoItem from './components/InfoItem';
 import { formatDate } from '../../utils/format';
 import { deleteUserById } from '../../services/user';
-import { useNavigate } from '@umijs/max';
+import { useNavigate, useAccess, Access } from '@umijs/max';
 export default function UserList() {
   const [pageInfo, setPageInfo] = useState({
     current: 1,
     pageSize: 5,
   });
+  const access = useAccess()//获取权限对象
+  // console.log(access, 'acc')
   const tableRef = useRef();
   const navigate = useNavigate();
   const [isModal, setIsModal] = useState(false);
@@ -120,9 +122,12 @@ export default function UserList() {
             >
               编辑
             </Button>
-            <Button type="link" size="small" onClick={() => showInfoMadal(row)}>
-              删除
-            </Button>
+            <Access accessible={access.SuperAdmin}>
+              <Button type="link" size="small" onClick={() => showInfoMadal(row)}>
+                删除
+              </Button>
+            </Access>
+
           </div>
         );
       },

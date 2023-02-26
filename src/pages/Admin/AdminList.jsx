@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from '@umijs/max';
+import { useDispatch, useSelector, useModel } from '@umijs/max';
 import { useEffect } from 'react';
 import { PageContainer, ProTable } from '@ant-design/pro-components';
 import { Button, Switch, Tag, Modal, message } from 'antd';
 import AdminForm from './components/AdminForm';
-import { getAdminById } from '../../services/admin';
 export default function AdminList() {
   const dispatch = useDispatch();
   //表单信息
@@ -16,6 +15,8 @@ export default function AdminList() {
     setNewAdminInfo(row);
     setIsEditModal(true);
   }
+  const { initialState } = useModel('@@initialState')
+  console.log(initialState, 'ini')
   //表格规则
   const columns = [
     {
@@ -67,6 +68,7 @@ export default function AdminList() {
         let renderSwitch = (
           <Switch
             defaultChecked={row.enabled}
+            disabled={initialState.adminInfo._id === row._id}
             onChange={(value) => handleSwitch(value, row)}
           />
         );
@@ -127,10 +129,15 @@ export default function AdminList() {
   //弹窗确认函数
   function handleOk() {
     setIsModal(false);
+    if (initialState.adminInfo._id === adminInfo._id) {
+      location.href = '/login'
+      localStorage.removeItem('adminToken')
+    }
     dispatch({
       type: 'admin/_deleteAdmin',
       payload: adminInfo,
     });
+
     message.success('删除成功');
   }
 

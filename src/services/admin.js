@@ -52,9 +52,43 @@ export function addAdmin(data) {
     data,
   });
 }
-
+/**
+ * 通过id获取管理员信息
+ * @param {*} id 
+ * @returns 
+ */
 export function getAdminById(id) {
   return request(`/api/admin/${id}`, {
     method: 'GET',
   });
+}
+
+/**
+ * 获取登录的验证码
+ * @param {*} data 
+ * @returns 
+ */
+export function getCaptcha() {
+  return request(`/res/captcha`, {
+    method: 'GET'
+  })
+}
+
+/**
+ * 管理员登录
+ * @param {*} data 
+ * @returns 
+ */
+export function loginAdmin(data) {
+  return request(`/api/admin/login`, {
+    method: 'POST',
+    data
+  })
+}
+
+
+export function restoreLogin(){
+  return request(`/api/admin/whoami`,{
+    method:'GET',
+  })
 }
